@@ -100,7 +100,17 @@
   }
   #yesBtn{ left:30px; background:var(--gold); color:#2a2450; animation:pulse 1.6s ease-in-out infinite; }
   @keyframes pulse{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.06);} }
-  #noBtn{ left:150px; background:transparent; color:#cfc8e8; border:1px solid var(--panel-border); transition:left 0.15s ease, top 0.15s ease; }
+ #noBtn{
+  position:absolute;
+  background:var(--rose);
+  color:#2a2450;
+  font-weight:600;
+  font-size:16px;
+  padding:14px 26px;
+  border:2px solid var(--gold);
+  box-shadow:0 4px 16px rgba(0,0,0,0.4);
+  transition:left 0.25s ease, top 0.25s ease;
+}
 
   .msg-card{
     background:var(--panel); border:1px solid var(--panel-border); border-radius:12px;
@@ -435,34 +445,48 @@ flipCard.addEventListener('click', () => {
 });
 
 let noBtnEscaped = false;
+let dodging = false;
 function dodgeNo(){
+  if(dodging) return;      // cooldown guard — stops re-trigger mid-move
+  dodging = true;
   if(!noBtnEscaped){
     document.body.appendChild(noBtn);   // break out of the transformed card
     noBtn.style.position = 'fixed';
     noBtn.style.margin = '0';
-    noBtn.style.zIndex = '50';
+    noBtn.style.zIndex = '999';
     noBtnEscaped = true;
   }
-  const margin = 16, pad = 28;
-  const btnW = noBtn.offsetWidth, btnH = noBtn.offsetHeight;
+   const margin = 20, pad = 40;
+  const btnW = noBtn.offsetWidth || 100;
+  const btnH = noBtn.offsetHeight || 44;
+  const maxX = Math.max(window.innerWidth - btnW - margin, margin);
+  const maxY = Math.max(window.innerHeight - btnH - margin, margin);
   const yesRect = yesBtn.getBoundingClientRect();
-  let x, y, tries = 0;
+ let x, y, tries = 0;
   do {
-    x = margin + Math.random() * (window.innerWidth - btnW - margin*2);
-    y = margin + Math.random() * (window.innerHeight - btnH - margin*2);
+    x = margin + Math.random() * (maxX - margin);
+    y = margin + Math.random() * (maxY - margin);
     tries++;
   } while (
     tries < 20 &&
     x < yesRect.right + pad && x + btnW > yesRect.left - pad &&
     y < yesRect.bottom + pad && y + btnH > yesRect.top - pad
   );
+
+  // hard clamp so it can never end up off-screen
+  x = Math.min(Math.max(x, margin), window.innerWidth - btnW - margin);
+  y = Math.min(Math.max(y, margin), window.innerHeight - btnH - margin);
+
   noBtn.style.left = x + 'px';
   noBtn.style.top = y + 'px';
+
+  setTimeout(() => { dodging = false; }, 300); // matches the CSS transition time
 }
+
 noBtn.addEventListener('pointerenter', dodgeNo);
-noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeNo(); }, {passive:false});
 noBtn.addEventListener('mouseover', dodgeNo);
-addTilt(flipCard);
+noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeNo(); }, {passive:false});
+//addTilt(flipCard);
 
 // ---------- card 2 ----------
 const stage2 = document.getElementById('stage2');
