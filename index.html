@@ -93,7 +93,12 @@
   .flip-back{ background:var(--panel); backdrop-filter:blur(3px); transform:rotateY(180deg); gap:16px; }
   .flip-back p{ font-family:'Cormorant Garamond',serif; font-size:18px; line-height:1.5; margin:0; color:var(--ink); min-height:70px; }
 
-  .yn-row{ position:relative; width:100%; height:52px; margin-top:4px; }
+ .yn-row{
+  position:relative;
+  width:100%;
+  height:110px;
+  margin-top:4px;
+}
   .yn-btn{
     position:absolute; top:0; padding:10px 20px; border-radius:30px; border:none;
     font-family:'Inter',sans-serif; font-size:14px; font-weight:500; cursor:pointer;
@@ -435,16 +440,47 @@ flipCard.addEventListener('click', () => {
   setTimeout(() => { typeText(questionText, 'Do you feel grateful that I exist, and mere jaisa koi dost nhi hai?', 26); }, 500);
 });
 function dodgeNo(){
-  const rowW = ynRow.clientWidth, rowH = ynRow.clientHeight;
-  const btnW = noBtn.offsetWidth, btnH = noBtn.offsetHeight;
-  const maxLeft = Math.max(rowW - btnW - 4, 10);
-  const maxTop = Math.max(rowH - btnH - 4, 0);
-  noBtn.style.left = (Math.random()*maxLeft) + 'px';
-  noBtn.style.top = (Math.random()*maxTop) + 'px';
+  const rowW = ynRow.clientWidth;
+  const rowH = ynRow.clientHeight;
+
+  const btnW = noBtn.offsetWidth;
+  const btnH = noBtn.offsetHeight;
+
+  const yesLeft = yesBtn.offsetLeft;
+  const yesTop = yesBtn.offsetTop;
+  const yesW = yesBtn.offsetWidth;
+  const yesH = yesBtn.offsetHeight;
+
+  const padding = 6;
+  const gap = 14;
+
+  const maxLeft = rowW - btnW - padding;
+  const maxTop = rowH - btnH - padding;
+
+  let left, top;
+  let attempts = 0;
+
+  do {
+    left = padding + Math.random() * Math.max(0, maxLeft - padding);
+    top = padding + Math.random() * Math.max(0, maxTop - padding);
+
+    attempts++;
+
+    const overlapsYes =
+      left < yesLeft + yesW + gap &&
+      left + btnW + gap > yesLeft &&
+      top < yesTop + yesH + gap &&
+      top + btnH + gap > yesTop;
+
+    if (!overlapsYes) {
+      break;
+    }
+
+  } while (attempts < 100);
+
+  noBtn.style.left = `${left}px`;
+  noBtn.style.top = `${top}px`;
 }
-noBtn.addEventListener('pointerenter', dodgeNo);
-noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeNo(); }, {passive:false});
-noBtn.addEventListener('mouseover', dodgeNo);
 addTilt(flipCard);
 
 // ---------- card 2 ----------
