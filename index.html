@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Happy Birthday, Rishika</title>
+<title>Happy Birthday,Paandu</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -149,7 +149,7 @@
 <div class="wrap">
   <p class="eyebrow">24 September</p>
   <h1>Happy Birthday,<br>Rishika</h1>
-  <p class="sub">Turning 27, tomorrow — and somewhere in the last decade, you stopped being a friend and became family.</p>
+  <p class="sub">28 ki ho gyi, Bas bhai ab kar lo shaadi umaar nikal rha hai </p>
 
   <div class="candle-stage" id="candleStage">
     <svg class="cake" viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -164,7 +164,7 @@
       </g>
     </svg>
     <button class="candle-btn" id="blowBtn" aria-label="Blow out the candle">
-      <span class="prompt" id="blowPrompt">tap the candle 3 times to blow it out and make a wish ✨</span>
+      <span class="prompt" id="blowPrompt">Idhar dabao ✨</span>
     </button>
   </div>
 
@@ -401,7 +401,7 @@ blowBtn.addEventListener('click', () => {
   flameGroup.style.transition = 'opacity 0.15s ease, transform 0.15s ease';
   flameGroup.style.opacity = String(1 - taps*0.3);
   flameGroup.style.transform = `scaleY(${1 - taps*0.25}) rotate(${(Math.random()-0.5)*20}deg)`;
-  if(taps < 3){ blowPrompt.textContent = taps === 1 ? 'once more...' : 'almost there...'; return; }
+  if(taps < 3){ blowPrompt.textContent = taps === 1 ? 'Aur ekbar...' : 'dum lagake...'; return; }
   blown = true;
   flameGroup.style.opacity = '0';
   blowPrompt.textContent = 'wish made 🎂';
@@ -429,7 +429,7 @@ flipCard.addEventListener('click', () => {
   if(flipped) return;
   flipped = true;
   flipCard.classList.add('flipped');
-  setTimeout(() => { typeText(questionText, 'Do you feel grateful that I exist, and that there is no better friend than me?', 26); }, 500);
+  setTimeout(() => { typeText(questionText, 'Do you feel grateful that I exist, and mere jaisa koi dost nhi hai?', 26); }, 500);
 });
 function dodgeNo(){
   const rowW = ynRow.clientWidth, rowH = ynRow.clientHeight;
@@ -474,9 +474,9 @@ toStage3Btn.addEventListener('click', async () => {
   addTilt(letterEl);
   setTimeout(()=> stage3.scrollIntoView({behavior:'smooth', block:'center'}), 300);
   await new Promise(r => setTimeout(r, 500));
-  await typeText(l1, "Ten years is a strange amount of time. Long enough that I don't remember a version of my life you weren't somewhere inside of — the bad days you talked me down from, the good ones that weren't fully real until I'd told you about them.", 9);
-  await typeText(l2, "We've talked about everything over the years. Nothing was ever off the table, and nothing ever needed to be. That's rarer than people admit, and I don't take it for granted.", 9);
-  await typeText(l3, "So today isn't really about the cake or the candle. It's just a reason to say it properly: I'm glad it's been you, for this long, and I hope it keeps being you for a lot longer.", 9);
+  await typeText(l1, "Bhai ka bday......i think 10 saal ho gye since we are good friends but jante to 2008 se hai tumhara choices ko abhi yaha rehne dete hai koi dekh lega 😏", 9);
+  await typeText(l2, "We've talked about everything over the years. Nothing was ever off the table, and nothing ever needed to be ha bich me kuch tym ke liye thoda upar niche ho gya tha iykyk", 9);
+  await typeText(l3, " and aur v bahut kuch hai jo agar bahar leak hua baat to dono ko ghar se nikaal diya jayga So rehne dete hai 😜 i don't know kyu itna mehnat kar rhe hai but thik hai khus ho jao tumhara hi din hai", 9);
   await typeText(l4, '— with a decade of love', 30);
   popYearStars();
   toStage4Btn.classList.remove('hidden');
@@ -491,6 +491,12 @@ toStage4Btn.addEventListener('click', () => {
   addTilt(card4);
   fireworksShow(6);
   setTimeout(()=> stage4.scrollIntoView({behavior:'smooth', block:'center'}), 300);
+  await new Promise(r => setTimeout(r, 500));
+  await typeText(l1, "Acha hua Uncle Aunty ka shaadi ho gya ki tumhara kismat itna acha ho gya ki mere jaisa dost mil gya nhi to pta nhi kya hota tumhara.....","Once again happy birthday Dost🌟 💫(28 ki ho gyi kammo)", 9);
+  await typeText(l2, "I know i'm not good at ye jo v wish ya celebration me but thik hai adjust kar lo itna hi mehnat ho paya ", 9);
+ 
+  popYearStars();
+  toStage4Btn.classList.remove('hidden');
 });
 </script>
 </body>
