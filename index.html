@@ -425,7 +425,6 @@ blowBtn.addEventListener('click', () => {
 const flipCard = document.getElementById('flipCard');
 const yesBtn = document.getElementById('yesBtn');
 const noBtn = document.getElementById('noBtn');
-const ynRow = document.querySelector('.yn-row');
 const questionText = document.getElementById('questionText');
 let flipped = false;
 flipCard.addEventListener('click', () => {
@@ -434,13 +433,31 @@ flipCard.addEventListener('click', () => {
   flipCard.classList.add('flipped');
   setTimeout(() => { typeText(questionText, 'Do you feel grateful that I exist, and mere jaisa koi dost nhi hai?', 26); }, 500);
 });
+
+let noBtnEscaped = false;
 function dodgeNo(){
-  const rowW = ynRow.clientWidth, rowH = ynRow.clientHeight;
+  if(!noBtnEscaped){
+    document.body.appendChild(noBtn);   // break out of the transformed card
+    noBtn.style.position = 'fixed';
+    noBtn.style.margin = '0';
+    noBtn.style.zIndex = '50';
+    noBtnEscaped = true;
+  }
+  const margin = 16, pad = 28;
   const btnW = noBtn.offsetWidth, btnH = noBtn.offsetHeight;
-  const maxLeft = Math.max(rowW - btnW - 4, 10);
-  const maxTop = Math.max(rowH - btnH - 4, 0);
-  noBtn.style.left = (Math.random()*maxLeft) + 'px';
-  noBtn.style.top = (Math.random()*maxTop) + 'px';
+  const yesRect = yesBtn.getBoundingClientRect();
+  let x, y, tries = 0;
+  do {
+    x = margin + Math.random() * (window.innerWidth - btnW - margin*2);
+    y = margin + Math.random() * (window.innerHeight - btnH - margin*2);
+    tries++;
+  } while (
+    tries < 20 &&
+    x < yesRect.right + pad && x + btnW > yesRect.left - pad &&
+    y < yesRect.bottom + pad && y + btnH > yesRect.top - pad
+  );
+  noBtn.style.left = x + 'px';
+  noBtn.style.top = y + 'px';
 }
 noBtn.addEventListener('pointerenter', dodgeNo);
 noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); dodgeNo(); }, {passive:false});
@@ -453,6 +470,7 @@ const winkText = document.getElementById('winkText');
 const dareText = document.getElementById('dareText');
 const toStage3Btn = document.getElementById('toStage3');
 yesBtn.addEventListener('click', async () => {
+  noBtn.style.display = 'none';  
   stage2.classList.remove('hidden');
   const card2 = stage2.querySelector('.msg-card');
   card2.classList.add('stage-in');
